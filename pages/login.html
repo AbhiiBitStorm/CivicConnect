@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - LocalSolver</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ===== AUTH PAGE ===== */
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            background: #f8fafc;
+        }
+
+        /* LEFT SIDE */
+        .auth-left {
+            flex: 1;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-left::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+        }
+
+        .auth-left::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .auth-left-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .auth-left-logo i {
+            font-size: 28px;
+        }
+
+        .auth-left h2 {
+            font-size: 36px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .auth-left p {
+            font-size: 16px;
+            text-align: center;
+            opacity: 0.85;
+            line-height: 1.7;
+            margin-bottom: 50px;
+            max-width: 350px;
+        }
+
+        .auth-features {
+            display: flex;
+            flex-direction: column;
+            gap: 18px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .auth-feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.12);
+            padding: 14px 20px;
+            border-radius: 12px;
+            backdrop-filter: blur(10px);
+        }
+
+        .auth-feature i {
+            font-size: 20px;
+            color: #c4b5fd;
+        }
+
+        .auth-feature span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* RIGHT SIDE */
+        .auth-right {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+        }
+
+        .auth-form-box {
+            width: 100%;
+            max-width: 420px;
+        }
+
+        .auth-form-box .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 35px;
+            transition: color 0.3s;
+        }
+
+        .auth-form-box .back-link:hover {
+            color: #4f46e5;
+        }
+
+        .auth-form-box h1 {
+            font-size: 30px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .auth-form-box .subtitle {
+            font-size: 15px;
+            color: #718096;
+            margin-bottom: 35px;
+        }
+
+        .auth-form-box .subtitle span {
+            color: #4f46e5;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* FORM STYLES */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            font-size: 16px;
+        }
+
+        .input-wrapper input {
+            width: 100%;
+            padding: 14px 16px 14px 45px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 15px;
+            font-family: 'Poppins', sans-serif;
+            color: #2d3748;
+            background: #ffffff;
+            transition: all 0.3s;
+            outline: none;
+        }
+
+        .input-wrapper input:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.08);
+        }
+
+        .input-wrapper input::placeholder {
+            color: #cbd5e0;
+        }
+
+        .eye-icon {
+            left: auto !important;
+            right: 16px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .eye-icon:hover {
+            color: #4f46e5 !important;
+        }
+
+        .form-options {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 28px;
+        }
+
+        .remember-me {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #4a5568;
+            cursor: pointer;
+        }
+
+        .remember-me input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #4f46e5;
+            cursor: pointer;
+        }
+
+        .forgot-link {
+            font-size: 14px;
+            color: #4f46e5;
+            font-weight: 600;
+            transition: opacity 0.3s;
+        }
+
+        .forgot-link:hover {
+            opacity: 0.7;
+        }
+
+        .btn-auth {
+            width: 100%;
+            padding: 15px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(79,70,229,0.3);
+        }
+
+        .btn-auth:hover {
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79,70,229,0.4);
+        }
+
+        .btn-auth:active {
+            transform: translateY(0);
+        }
+
+        /* DIVIDER */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 28px 0;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        /* SOCIAL BUTTONS */
+        .social-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-social {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #4a5568;
+            transition: all 0.3s;
+        }
+
+        .btn-social:hover {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        .btn-social img {
+            width: 18px;
+            height: 18px;
+        }
+
+        /* ERROR MESSAGE */
+        .error-msg {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #e53e3e;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* SUCCESS MESSAGE */
+        .success-msg {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #38a169;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+    <!-- LEFT SIDE -->
+    <div class="auth-left">
+        <div class="auth-left-logo">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>LocalSolver</span>
+        </div>
+        <h2>Welcome Back! 👋</h2>
+        <p>Apne area ki problems solve karo aur community ki madad karo</p>
+
+        <div class="auth-features">
+            <div class="auth-feature">
+                <i class="fas fa-bolt"></i>
+                <span>Fast Problem Resolution</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-users"></i>
+                <span>500+ Local Experts</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-shield-alt"></i>
+                <span>Trusted & Verified Platform</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Location Based Solutions</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="auth-right">
+        <div class="auth-form-box">
+
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+
+            <h1>Login Karo 🔐</h1>
+            <p class="subtitle">
+                Account nahi hai?
+                <span onclick="window.location.href='register.html'">Register karo</span>
+            </p>
+
+            <!-- ERROR MSG -->
+            <div class="error-msg" id="errorMsg">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Invalid email or password!</span>
+            </div>
+
+            <!-- SUCCESS MSG -->
+            <div class="success-msg" id="successMsg">
+                <i class="fas fa-check-circle"></i>
+                <span>Login successful! Redirecting...</span>
+            </div>
+
+            <!-- FORM -->
+            <form id="loginForm">
+
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="apna@email.com"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Apna password dalو"
+                            required
+                        />
+                        <i class="fas fa-eye eye-icon" id="togglePassword"></i>
+                    </div>
+                </div>
+
+                <div class="form-options">
+                    <label class="remember-me">
+                        <input type="checkbox" id="remember" />
+                        Remember me
+                    </label>
+                    <a href="#" class="forgot-link">Forgot Password?</a>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Login Karo
+                </button>
+
+            </form>
+
+            <div class="divider">Ya login karo with</div>
+
+            <div class="social-btns">
+                <button class="btn-social">
+                    <img src="https://www.google.com/favicon.ico" alt="Google"/>
+                    Google
+                </button>
+                <button class="btn-social">
+                    <i class="fab fa-facebook" style="color:#1877f2; font-size:18px;"></i>
+                    Facebook
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Toggle Password Visibility
+    const togglePassword = document.getElementById('togglePassword');
+    const passwordInput = document.getElementById('password');
+
+    togglePassword.addEventListener('click', () => {
+        if (passwordInput.type === 'password') {
+            passwordInput.type = 'text';
+            togglePassword.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            passwordInput.type = 'password';
+            togglePassword.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    // Login Form Submit
+    const loginForm = document.getElementById('loginForm');
+    const errorMsg = document.getElementById('errorMsg');
+    const successMsg = document.getElementById('successMsg');
+
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        // Demo Credentials
+        if (email === 'demo@localsolver.com' && password === 'demo123') {
+            errorMsg.style.display = 'none';
+            successMsg.style.display = 'flex';
+
+            setTimeout(() => {
+                window.location.href = 'dashboard.html';
+            }, 1500);
+        } else {
+            successMsg.style.display = 'none';
+            errorMsg.style.display = 'flex';
+            document.getElementById('errorText').textContent =
+                'Invalid credentials! Use demo@localsolver.com / demo123';
+        }
+    });
+</script>
+
+</body>
+</html>

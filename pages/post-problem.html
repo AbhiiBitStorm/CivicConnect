@@ -1,0 +1,1660 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Post Problem - LocalSolver</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+
+        /* ===== LAYOUT ===== */
+        .page-layout {
+            display: flex;
+            min-height: 100vh;
+            background: #f8fafc;
+        }
+
+        /* ===== SIDEBAR ===== */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 2px solid #f0f4ff;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .sidebar-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 25px;
+            font-size: 20px;
+            font-weight: 700;
+            color: #4f46e5;
+            border-bottom: 2px solid #f0f4ff;
+        }
+
+        .sidebar-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 20px 25px;
+            background: #f0f4ff;
+            margin: 20px 15px;
+            border-radius: 14px;
+        }
+
+        .profile-avatar {
+            width: 45px;
+            height: 45px;
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 18px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+
+        .profile-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .profile-info p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .sidebar-nav {
+            padding: 10px 15px;
+            flex: 1;
+        }
+
+        .nav-section-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: #a0aec0;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 15px 12px 8px;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #718096;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-bottom: 3px;
+            text-decoration: none;
+        }
+
+        .nav-item:hover {
+            background: #f0f4ff;
+            color: #4f46e5;
+        }
+
+        .nav-item.active {
+            background: #4f46e5;
+            color: white;
+        }
+
+        .nav-item i {
+            width: 20px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .sidebar-bottom {
+            padding: 15px;
+            border-top: 2px solid #f0f4ff;
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #e53e3e;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fff5f5;
+        }
+
+        .logout-btn:hover {
+            background: #e53e3e;
+            color: white;
+        }
+
+        /* ===== MAIN ===== */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 30px;
+        }
+
+        /* TOPBAR */
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 18px 25px;
+            border-radius: 16px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .topbar-left h2 {
+            font-size: 22px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+
+        .topbar-left p {
+            font-size: 14px;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #718096;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .back-btn:hover {
+            border-color: #4f46e5;
+            color: #4f46e5;
+        }
+
+        /* ===== STEP PROGRESS ===== */
+        .step-progress {
+            background: white;
+            border-radius: 16px;
+            padding: 25px 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .steps-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0;
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            position: relative;
+        }
+
+        .step-item::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            left: 60%;
+            width: 80%;
+            height: 2px;
+            background: #e2e8f0;
+            z-index: 0;
+        }
+
+        .step-item:last-child::after {
+            display: none;
+        }
+
+        .step-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #e2e8f0;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 700;
+            color: #a0aec0;
+            position: relative;
+            z-index: 1;
+            transition: all 0.3s;
+        }
+
+        .step-circle.active {
+            border-color: #4f46e5;
+            background: #4f46e5;
+            color: white;
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.2);
+        }
+
+        .step-circle.done {
+            border-color: #38a169;
+            background: #38a169;
+            color: white;
+        }
+
+        .step-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #a0aec0;
+            text-align: center;
+        }
+
+        .step-label.active {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        .step-label.done {
+            color: #38a169;
+        }
+
+        /* ===== FORM LAYOUT ===== */
+        .form-layout {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 25px;
+        }
+
+        /* ===== FORM CARD ===== */
+        .form-card {
+            background: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .form-card h3 {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 5px;
+        }
+
+        .form-card .card-sub {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 25px;
+        }
+
+        /* CATEGORY GRID */
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .cat-card {
+            padding: 15px 10px;
+            border: 2px solid #e2e8f0;
+            border-radius: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .cat-card:hover {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+            transform: translateY(-2px);
+        }
+
+        .cat-card.selected {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+        }
+
+        .cat-card .cat-emoji {
+            font-size: 28px;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .cat-card span {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4a5568;
+        }
+
+        .cat-card.selected span {
+            color: #4f46e5;
+        }
+
+        /* FORM GROUP */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .form-group label .required {
+            color: #e53e3e;
+        }
+
+        .form-group label .optional {
+            font-size: 11px;
+            color: #a0aec0;
+            font-weight: 400;
+            background: #f8fafc;
+            padding: 2px 8px;
+            border-radius: 20px;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 13px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #2d3748;
+            outline: none;
+            transition: all 0.3s;
+            background: #fafafa;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.08);
+            background: white;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: #cbd5e0;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .char-count {
+            font-size: 12px;
+            color: #a0aec0;
+            text-align: right;
+            margin-top: 5px;
+        }
+
+        /* FORM ROW */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        /* PRIORITY SELECTOR */
+        .priority-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .priority-btn {
+            flex: 1;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 13px;
+            font-weight: 600;
+            background: white;
+        }
+
+        .priority-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .priority-btn.low {
+            color: #38a169;
+        }
+
+        .priority-btn.low.selected {
+            border-color: #38a169;
+            background: #f0fff4;
+        }
+
+        .priority-btn.medium {
+            color: #d69e2e;
+        }
+
+        .priority-btn.medium.selected {
+            border-color: #d69e2e;
+            background: #fffaf0;
+        }
+
+        .priority-btn.high {
+            color: #e53e3e;
+        }
+
+        .priority-btn.high.selected {
+            border-color: #e53e3e;
+            background: #fff5f5;
+        }
+
+        /* IMAGE UPLOAD */
+        .upload-area {
+            border: 2px dashed #e2e8f0;
+            border-radius: 14px;
+            padding: 30px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafafa;
+            position: relative;
+        }
+
+        .upload-area:hover {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+        }
+
+        .upload-area.dragover {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+            transform: scale(1.01);
+        }
+
+        .upload-area i {
+            font-size: 40px;
+            color: #cbd5e0;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .upload-area h4 {
+            font-size: 15px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 5px;
+        }
+
+        .upload-area p {
+            font-size: 13px;
+            color: #a0aec0;
+        }
+
+        .upload-area input[type="file"] {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        .upload-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 12px;
+            padding: 8px 20px;
+            background: #4f46e5;
+            color: white;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        /* IMAGE PREVIEW */
+        .image-preview {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .preview-img {
+            aspect-ratio: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+            border: 2px solid #e2e8f0;
+        }
+
+        .preview-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .preview-img .remove-img {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 22px;
+            height: 22px;
+            background: #e53e3e;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            cursor: pointer;
+        }
+
+        /* LOCATION BOX */
+        .location-box {
+            background: #f0f4ff;
+            border-radius: 12px;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+            border: 2px solid #e2e8f0;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .location-box:hover {
+            border-color: #4f46e5;
+        }
+
+        .location-box i {
+            font-size: 20px;
+            color: #4f46e5;
+        }
+
+        .location-box .loc-info h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .location-box .loc-info p {
+            font-size: 12px;
+            color: #718096;
+        }
+
+        .location-box .detect-btn {
+            margin-left: auto;
+            font-size: 12px;
+            color: #4f46e5;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        /* ===== RIGHT SIDEBAR ===== */
+        .right-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .panel-card {
+            background: white;
+            border-radius: 16px;
+            padding: 22px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+        }
+
+        .panel-card h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 15px;
+        }
+
+        /* PREVIEW CARD */
+        .preview-card-box {
+            background: linear-gradient(135deg, #f0f4ff, #f5f0ff);
+            border-radius: 14px;
+            padding: 18px;
+            border: 2px solid #e2e8f0;
+        }
+
+        .preview-card-box .prev-category {
+            font-size: 12px;
+            font-weight: 600;
+            color: #4f46e5;
+            background: #ede9fe;
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+
+        .preview-card-box h4 {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .preview-card-box p {
+            font-size: 13px;
+            color: #718096;
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .preview-card-box .prev-meta {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .preview-card-box .prev-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .preview-card-box .prev-meta i {
+            color: #4f46e5;
+            width: 14px;
+        }
+
+        /* TIPS */
+        .tip-item {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 13px;
+            color: #4a5568;
+            line-height: 1.5;
+        }
+
+        .tip-item .tip-icon {
+            font-size: 16px;
+            flex-shrink: 0;
+        }
+
+        /* SUBMIT BUTTONS */
+        .submit-row {
+            display: flex;
+            gap: 12px;
+            margin-top: 25px;
+        }
+
+        .btn-draft {
+            flex: 1;
+            padding: 14px;
+            background: white;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-draft:hover {
+            background: #f0f4ff;
+        }
+
+        .btn-post {
+            flex: 2;
+            padding: 14px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 15px rgba(79,70,229,0.3);
+        }
+
+        .btn-post:hover {
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79,70,229,0.4);
+        }
+
+        /* SUCCESS OVERLAY */
+        .success-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.6);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+
+        .success-overlay.active {
+            display: flex;
+        }
+
+        .success-box {
+            background: white;
+            border-radius: 24px;
+            padding: 50px 40px;
+            text-align: center;
+            max-width: 420px;
+            width: 90%;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .success-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #38a169, #2f855a);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 35px;
+            color: white;
+            margin: 0 auto 20px;
+            animation: bounceIn 0.5s 0.2s both;
+        }
+
+        @keyframes bounceIn {
+            from { transform: scale(0); }
+            to { transform: scale(1); }
+        }
+
+        .success-box h2 {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 10px;
+        }
+
+        .success-box p {
+            font-size: 15px;
+            color: #718096;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+
+        .success-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-go-dashboard {
+            flex: 1;
+            padding: 13px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-go-dashboard:hover {
+            background: #3730a3;
+        }
+
+        .btn-post-another {
+            flex: 1;
+            padding: 13px;
+            background: white;
+            color: #4f46e5;
+            border: 2px solid #4f46e5;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-post-another:hover {
+            background: #f0f4ff;
+        }
+
+        /* TOAST */
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #1a202c;
+            color: white;
+            padding: 15px 22px;
+            border-radius: 14px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.4s;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="page-layout">
+
+    <!-- ===== SIDEBAR ===== -->
+    <aside class="sidebar">
+        <div class="sidebar-logo">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>LocalSolver</span>
+        </div>
+
+        <div class="sidebar-profile">
+            <div class="profile-avatar" id="avatarText">R</div>
+            <div class="profile-info">
+                <h4 id="userName">Rahul</h4>
+                <p>Active Member</p>
+            </div>
+        </div>
+
+        <nav class="sidebar-nav">
+            <div class="nav-section-title">Main Menu</div>
+            <a href="dashboard.html" class="nav-item">
+                <i class="fas fa-home"></i> Dashboard
+            </a>
+            <a href="#" class="nav-item active">
+                <i class="fas fa-plus-circle"></i> Post Problem
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-exclamation-circle"></i> My Problems
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-compass"></i> Explore
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-tools"></i> Experts
+            </a>
+            <div class="nav-section-title">Account</div>
+            <a href="#" class="nav-item">
+                <i class="fas fa-bell"></i> Notifications
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-user"></i> Profile
+            </a>
+        </nav>
+
+        <div class="sidebar-bottom">
+            <div class="logout-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </div>
+        </div>
+    </aside>
+
+    <!-- ===== MAIN ===== -->
+    <main class="main-content">
+
+        <!-- TOPBAR -->
+        <div class="topbar">
+            <div class="topbar-left">
+                <h2>🚨 Problem Post Karo</h2>
+                <p>Apni problem detail me describe karo taaki sahi solution mile</p>
+            </div>
+            <a href="dashboard.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Dashboard
+            </a>
+        </div>
+
+        <!-- STEP PROGRESS -->
+        <div class="step-progress">
+            <div class="steps-row">
+                <div class="step-item">
+                    <div class="step-circle active" id="sc1">1</div>
+                    <div class="step-label active">Category</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="sc2">2</div>
+                    <div class="step-label" id="sl2">Details</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="sc3">3</div>
+                    <div class="step-label" id="sl3">Location</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="sc4">4</div>
+                    <div class="step-label" id="sl4">Photos</div>
+                </div>
+                <div class="step-item">
+                    <div class="step-circle" id="sc5">✓</div>
+                    <div class="step-label" id="sl5">Submit</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- FORM LAYOUT -->
+        <div class="form-layout">
+
+            <!-- LEFT - MAIN FORM -->
+            <div>
+
+                <!-- CATEGORY -->
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3>📂 Category Select Karo</h3>
+                    <p class="card-sub">Aapki problem kis type ki hai?</p>
+
+                    <div class="category-grid">
+                        <div class="cat-card selected" onclick="selectCategory(this, 'Water Issue')">
+                            <span class="cat-emoji">💧</span>
+                            <span>Water</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Electricity')">
+                            <span class="cat-emoji">⚡</span>
+                            <span>Electricity</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Road Problem')">
+                            <span class="cat-emoji">🛣️</span>
+                            <span>Road</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Sanitation')">
+                            <span class="cat-emoji">🗑️</span>
+                            <span>Sanitation</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Education')">
+                            <span class="cat-emoji">📚</span>
+                            <span>Education</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Health')">
+                            <span class="cat-emoji">🏥</span>
+                            <span>Health</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Environment')">
+                            <span class="cat-emoji">🌳</span>
+                            <span>Environment</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Home Repair')">
+                            <span class="cat-emoji">🔧</span>
+                            <span>Home Repair</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Security')">
+                            <span class="cat-emoji">🔒</span>
+                            <span>Security</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Transport')">
+                            <span class="cat-emoji">🚌</span>
+                            <span>Transport</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Internet')">
+                            <span class="cat-emoji">📶</span>
+                            <span>Internet</span>
+                        </div>
+                        <div class="cat-card" onclick="selectCategory(this, 'Other')">
+                            <span class="cat-emoji">❓</span>
+                            <span>Other</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- DETAILS -->
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3>📝 Problem Details</h3>
+                    <p class="card-sub">Jitna detail me batao utna accha solution milega</p>
+
+                    <div class="form-group">
+                        <label>
+                            Problem Title
+                            <span class="required">*</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="probTitle"
+                            placeholder="Short me batao kya problem hai..."
+                            maxlength="100"
+                            oninput="updatePreview(); updateCharCount('probTitle','titleCount',100)"
+                        />
+                        <div class="char-count"><span id="titleCount">0</span>/100</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Description
+                            <span class="required">*</span>
+                        </label>
+                        <textarea
+                            id="probDesc"
+                            placeholder="Problem ko detail me describe karo... Kab se ho rahi hai? Kitne log affected hain? Kya try kiya?"
+                            rows="5"
+                            maxlength="500"
+                            oninput="updatePreview(); updateCharCount('probDesc','descCount',500)"
+                        ></textarea>
+                        <div class="char-count"><span id="descCount">0</span>/500</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Priority Level <span class="required">*</span></label>
+                        <div class="priority-selector">
+                            <div class="priority-btn low" onclick="selectPriority('low', this)">
+                                🟢 Low
+                            </div>
+                            <div class="priority-btn medium selected" onclick="selectPriority('medium', this)">
+                                🟡 Medium
+                            </div>
+                            <div class="priority-btn high" onclick="selectPriority('high', this)">
+                                🔴 High / Urgent
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Affected People <span class="optional">optional</span></label>
+                            <select id="affectedPeople">
+                                <option>Just Me</option>
+                                <option>2-5 People</option>
+                                <option>6-20 People</option>
+                                <option>Whole Colony</option>
+                                <option>Whole Area</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Problem Since <span class="optional">optional</span></label>
+                            <select id="problemSince">
+                                <option>Today</option>
+                                <option>Yesterday</option>
+                                <option>2-3 Days</option>
+                                <option>1 Week</option>
+                                <option>1 Month+</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LOCATION -->
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3>📍 Location Details</h3>
+                    <p class="card-sub">Sahi location se nearby experts jaldi mil jayenge</p>
+
+                    <div class="location-box" onclick="detectLocation()">
+                        <i class="fas fa-location-arrow"></i>
+                        <div class="loc-info">
+                            <h4>Auto Detect Location</h4>
+                            <p id="detectedLoc">Click karke location detect karo</p>
+                        </div>
+                        <span class="detect-btn">
+                            <i class="fas fa-crosshairs"></i> Detect
+                        </span>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>City <span class="required">*</span></label>
+                            <select id="probCity">
+                                <option value="">Select City</option>
+                                <option>Delhi</option>
+                                <option>Mumbai</option>
+                                <option>Pune</option>
+                                <option>Bangalore</option>
+                                <option>Hyderabad</option>
+                                <option>Chennai</option>
+                                <option>Kolkata</option>
+                                <option>Jaipur</option>
+                                <option>Lucknow</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Area / Sector <span class="required">*</span></label>
+                            <input
+                                type="text"
+                                id="probArea"
+                                placeholder="Sector 14, MG Road..."
+                                oninput="updatePreview()"
+                            />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            Landmark
+                            <span class="optional">optional</span>
+                        </label>
+                        <input
+                            type="text"
+                            id="probLandmark"
+                            placeholder="Nearby koi building, school, temple..."
+                        />
+                    </div>
+                </div>
+
+                <!-- PHOTOS -->
+                <div class="form-card" style="margin-bottom: 20px;">
+                    <h3>📷 Photos Add Karo</h3>
+                    <p class="card-sub">Photos se experts ko problem samajhne me asaani hoti hai</p>
+
+                    <div class="upload-area"
+                         id="uploadArea"
+                         ondragover="dragOver(event)"
+                         ondragleave="dragLeave(event)"
+                         ondrop="dropFile(event)">
+                        <input type="file" accept="image/*" multiple onchange="handleFiles(this.files)" />
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <h4>Photos Yahan Drop Karo</h4>
+                        <p>Ya click karke select karo</p>
+                        <p style="font-size:11px; margin-top:5px;">PNG, JPG, JPEG • Max 5MB each • Up to 5 photos</p>
+                        <div class="upload-btn">
+                            <i class="fas fa-folder-open"></i>
+                            Browse Photos
+                        </div>
+                    </div>
+
+                    <div class="image-preview" id="imagePreview"></div>
+                </div>
+
+                <!-- CONTACT -->
+                <div class="form-card">
+                    <h3>📞 Contact Preference</h3>
+                    <p class="card-sub">Experts aapko kaise contact karein?</p>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Contact Number <span class="optional">optional</span></label>
+                            <input type="tel" id="contactNum" placeholder="+91 98765 43210" />
+                        </div>
+                        <div class="form-group">
+                            <label>Preferred Time <span class="optional">optional</span></label>
+                            <select>
+                                <option>Anytime</option>
+                                <option>Morning (6am-12pm)</option>
+                                <option>Afternoon (12pm-5pm)</option>
+                                <option>Evening (5pm-9pm)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- SUBMIT -->
+                    <div class="submit-row">
+                        <button class="btn-draft" onclick="saveDraft()">
+                            <i class="fas fa-save"></i>
+                            Save Draft
+                        </button>
+                        <button class="btn-post" onclick="submitProblem()">
+                            <i class="fas fa-paper-plane"></i>
+                            Problem Post Karo
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- RIGHT PANEL -->
+            <div class="right-panel">
+
+                <!-- LIVE PREVIEW -->
+                <div class="panel-card">
+                    <h3>👁️ Live Preview</h3>
+                    <div class="preview-card-box">
+                        <span class="prev-category" id="prevCategory">💧 Water Issue</span>
+                        <h4 id="prevTitle">Aapki problem yahan dikhegi...</h4>
+                        <p id="prevDesc">Description yahan aayega...</p>
+                        <div class="prev-meta">
+                            <span><i class="fas fa-map-marker-alt"></i> <span id="prevLocation">Location</span></span>
+                            <span><i class="fas fa-clock"></i> Just now</span>
+                            <span><i class="fas fa-signal"></i> <span id="prevPriority">Medium Priority</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TIPS -->
+                <div class="panel-card">
+                    <h3>💡 Tips for Better Response</h3>
+
+                    <div class="tip-item">
+                        <span class="tip-icon">📸</span>
+                        <span>Clear photos add karo - isse 3x zyada responses milte hain</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">📍</span>
+                        <span>Exact location dena zaroori hai taaki nearby experts mil sakein</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">📝</span>
+                        <span>Detail description likho - kab se, kitne log affected</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">🔴</span>
+                        <span>Urgent problem hai to High priority select karo</span>
+                    </div>
+                    <div class="tip-item">
+                        <span class="tip-icon">📞</span>
+                        <span>Contact number dene se expert directly call kar sakta hai</span>
+                    </div>
+                </div>
+
+                <!-- SIMILAR PROBLEMS -->
+                <div class="panel-card">
+                    <h3>🔍 Similar Problems</h3>
+
+                    <div style="display:flex; flex-direction:column; gap:10px;">
+                        <div style="padding:12px; background:#f8fafc; border-radius:10px; border:2px solid #e2e8f0; cursor:pointer; transition:all 0.3s;"
+                             onmouseover="this.style.borderColor='#4f46e5'"
+                             onmouseout="this.style.borderColor='#e2e8f0'">
+                            <p style="font-size:13px; font-weight:600; color:#2d3748; margin-bottom:4px;">💧 Pani kam pressure</p>
+                            <p style="font-size:12px; color:#718096;">Sector 12, Delhi • Solved ✅</p>
+                        </div>
+                        <div style="padding:12px; background:#f8fafc; border-radius:10px; border:2px solid #e2e8f0; cursor:pointer; transition:all 0.3s;"
+                             onmouseover="this.style.borderColor='#4f46e5'"
+                             onmouseout="this.style.borderColor='#e2e8f0'">
+                            <p style="font-size:13px; font-weight:600; color:#2d3748; margin-bottom:4px;">💧 Water supply nahi</p>
+                            <p style="font-size:12px; color:#718096;">Lajpat Nagar • In Progress</p>
+                        </div>
+                        <div style="padding:12px; background:#f8fafc; border-radius:10px; border:2px solid #e2e8f0; cursor:pointer; transition:all 0.3s;"
+                             onmouseover="this.style.borderColor='#4f46e5'"
+                             onmouseout="this.style.borderColor='#e2e8f0'">
+                            <p style="font-size:13px; font-weight:600; color:#2d3748; margin-bottom:4px;">💧 Leakage pipe issue</p>
+                            <p style="font-size:12px; color:#718096;">Noida Sector 62 • Open 🔴</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATS -->
+                <div class="panel-card" style="background: linear-gradient(135deg,#4f46e5,#7c3aed); color:white;">
+                    <h3 style="color:white;">📊 Aapke Stats</h3>
+                    <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:10px;">
+                        <div style="background:rgba(255,255,255,0.15); border-radius:10px; padding:12px; text-align:center;">
+                            <div style="font-size:22px; font-weight:700;">12</div>
+                            <div style="font-size:11px; opacity:0.85;">Problems</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.15); border-radius:10px; padding:12px; text-align:center;">
+                            <div style="font-size:22px; font-weight:700;">8</div>
+                            <div style="font-size:11px; opacity:0.85;">Solved</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.15); border-radius:10px; padding:12px; text-align:center;">
+                            <div style="font-size:22px; font-weight:700;">4.8⭐</div>
+                            <div style="font-size:11px; opacity:0.85;">Rating</div>
+                        </div>
+                        <div style="background:rgba(255,255,255,0.15); border-radius:10px; padding:12px; text-align:center;">
+                            <div style="font-size:22px; font-weight:700;">150</div>
+                            <div style="font-size:11px; opacity:0.85;">Points</div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- SUCCESS OVERLAY -->
+<div class="success-overlay" id="successOverlay">
+    <div class="success-box">
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        <h2>Problem Post Ho Gayi! 🎉</h2>
+        <p>Aapki problem successfully post ho gayi hai. Nearby experts aapko jaldi contact karenge!</p>
+        <div style="background:#f0f4ff; border-radius:12px; padding:15px; margin-bottom:25px; text-align:left;">
+            <p style="font-size:13px; color:#4a5568; margin-bottom:5px;">
+                <strong>Problem ID:</strong> #LPS-<span id="problemId">2024</span>
+            </p>
+            <p style="font-size:13px; color:#4a5568; margin-bottom:5px;">
+                <strong>Category:</strong> <span id="successCategory">Water Issue</span>
+            </p>
+            <p style="font-size:13px; color:#4a5568;">
+                <strong>Status:</strong> <span style="color:#e53e3e; font-weight:600;">Open 🔴</span>
+            </p>
+        </div>
+        <div class="success-actions">
+            <button class="btn-go-dashboard" onclick="goToDashboard()">
+                <i class="fas fa-home"></i> Dashboard
+            </button>
+            <button class="btn-post-another" onclick="postAnother()">
+                <i class="fas fa-plus"></i> Post Another
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast">
+    <i class="fas fa-info-circle"></i>
+    <span id="toastMsg">Message</span>
+</div>
+
+<script>
+    // ===== LOAD USER =====
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    if (user.name) {
+        document.getElementById('userName').textContent = user.name;
+        document.getElementById('avatarText').textContent = user.name[0].toUpperCase();
+    }
+
+    // ===== SELECTED VALUES =====
+    let selectedCategory = 'Water Issue';
+    let selectedPriority = 'medium';
+    let uploadedImages = [];
+
+    // ===== CATEGORY SELECT =====
+    function selectCategory(el, cat) {
+        document.querySelectorAll('.cat-card').forEach(c => c.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedCategory = cat;
+        document.getElementById('prevCategory').textContent =
+            el.querySelector('.cat-emoji').textContent + ' ' + cat;
+        updateStepProgress(1);
+    }
+
+    // ===== PRIORITY SELECT =====
+    function selectPriority(level, el) {
+        document.querySelectorAll('.priority-btn').forEach(b => b.classList.remove('selected'));
+        el.classList.add('selected');
+        selectedPriority = level;
+        const labels = {
+            low: '🟢 Low Priority',
+            medium: '🟡 Medium Priority',
+            high: '🔴 High Priority'
+        };
+        document.getElementById('prevPriority').textContent = labels[level];
+    }
+
+    // ===== LIVE PREVIEW =====
+    function updatePreview() {
+        const title = document.getElementById('probTitle').value;
+        const desc = document.getElementById('probDesc').value;
+        const area = document.getElementById('probArea').value;
+        const city = document.getElementById('probCity').value;
+
+        document.getElementById('prevTitle').textContent =
+            title || 'Aapki problem yahan dikhegi...';
+        document.getElementById('prevDesc').textContent =
+            desc || 'Description yahan aayega...';
+        document.getElementById('prevLocation').textContent =
+            (area && city) ? `${area}, ${city}` : 'Location';
+
+        if (title) updateStepProgress(2);
+        if (area) updateStepProgress(3);
+    }
+
+    // ===== CHAR COUNT =====
+    function updateCharCount(inputId, countId, max) {
+        const len = document.getElementById(inputId).value.length;
+        document.getElementById(countId).textContent = len;
+    }
+
+    // ===== STEP PROGRESS =====
+    function updateStepProgress(step) {
+        for (let i = 1; i <= step; i++) {
+            const circle = document.getElementById(`sc${i}`);
+            const label = document.getElementById(`sl${i}`);
+            if (circle) {
+                circle.classList.remove('active');
+                circle.classList.add('done');
+                circle.textContent = '✓';
+            }
+            if (label) {
+                label.classList.remove('active');
+                label.classList.add('done');
+            }
+        }
+        const next = document.getElementById(`sc${step + 1}`);
+        const nextLabel = document.getElementById(`sl${step + 1}`);
+        if (next) {
+            next.classList.add('active');
+            nextLabel.classList.add('active');
+        }
+    }
+
+    // ===== DETECT LOCATION =====
+    function detectLocation() {
+        document.getElementById('detectedLoc').textContent = 'Detecting...';
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                (pos) => {
+                    document.getElementById('detectedLoc').textContent =
+                        `Lat: ${pos.coords.latitude.toFixed(4)}, Lng: ${pos.coords.longitude.toFixed(4)}`;
+                    showToast('📍 Location detect ho gayi!');
+                },
+                () => {
+                    document.getElementById('detectedLoc').textContent = 'Location access denied';
+                    showToast('⚠️ Location access allow karo!');
+                }
+            );
+        }
+    }
+
+    // ===== IMAGE UPLOAD =====
+    function handleFiles(files) {
+        Array.from(files).forEach(file => {
+            if (uploadedImages.length >= 5) {
+                showToast('⚠️ Max 5 photos allowed!');
+                return;
+            }
+            if (file.size > 5 * 1024 * 1024) {
+                showToast('⚠️ File size 5MB se kam honi chahiye!');
+                return;
+            }
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                uploadedImages.push(e.target.result);
+                renderImagePreview();
+                updateStepProgress(4);
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    function renderImagePreview() {
+        const container = document.getElementById('imagePreview');
+        container.innerHTML = '';
+        uploadedImages.forEach((src, idx) => {
+            const div = document.createElement('div');
+            div.className = 'preview-img';
+            div.innerHTML = `
+                <img src="${src}" alt="preview"/>
+                <div class="remove-img" onclick="removeImage(${idx})">✕</div>
+            `;
+            container.appendChild(div);
+        });
+    }
+
+    function removeImage(idx) {
+        uploadedImages.splice(idx, 1);
+        renderImagePreview();
+    }
+
+    // DRAG & DROP
+    function dragOver(e) {
+        e.preventDefault();
+        document.getElementById('uploadArea').classList.add('dragover');
+    }
+
+    function dragLeave(e) {
+        document.getElementById('uploadArea').classList.remove('dragover');
+    }
+
+    function dropFile(e) {
+        e.preventDefault();
+        document.getElementById('uploadArea').classList.remove('dragover');
+        handleFiles(e.dataTransfer.files);
+    }
+
+    // ===== SAVE DRAFT =====
+    function saveDraft() {
+        const draft = {
+            title: document.getElementById('probTitle').value,
+            desc: document.getElementById('probDesc').value,
+            category: selectedCategory,
+            priority: selectedPriority,
+            city: document.getElementById('probCity').value,
+            area: document.getElementById('probArea').value,
+        };
+        localStorage.setItem('problemDraft', JSON.stringify(draft));
+        showToast('💾 Draft save ho gaya!');
+    }
+
+    // Load Draft if exists
+    const draft = JSON.parse(localStorage.getItem('problemDraft') || '{}');
+    if (draft.title) {
+        document.getElementById('probTitle').value = draft.title || '';
+        document.getElementById('probDesc').value = draft.desc || '';
+        document.getElementById('probCity').value = draft.city || '';
+        document.getElementById('probArea').value = draft.area || '';
+        updatePreview();
+        showToast('📂 Draft load ho gaya!');
+    }
+
+    // ===== SUBMIT PROBLEM =====
+    function submitProblem() {
+        const title = document.getElementById('probTitle').value.trim();
+        const desc = document.getElementById('probDesc').value.trim();
+        const city = document.getElementById('probCity').value;
+        const area = document.getElementById('probArea').value.trim();
+
+        if (!title) {
+            showToast('⚠️ Problem title daalo!');
+            return;
+        }
+        if (!desc) {
+            showToast('⚠️ Description likhو!');
+            return;
+        }
+        if (!city) {
+            showToast('⚠️ City select karo!');
+            return;
+        }
+        if (!area) {
+            showToast('⚠️ Area / Sector daalo!');
+            return;
+        }
+
+        // Save Problem
+        const problems = JSON.parse(localStorage.getItem('problems') || '[]');
+        const newProblem = {
+            id: Date.now(),
+            title, desc,
+            category: selectedCategory,
+            priority: selectedPriority,
+            city, area,
+            status: 'open',
+            images: uploadedImages,
+            time: new Date().toLocaleString(),
+            replies: 0,
+        };
+        problems.unshift(newProblem);
+        localStorage.setItem('problems', JSON.stringify(problems));
+        localStorage.removeItem('problemDraft');
+
+        // Show Success
+        document.getElementById('problemId').textContent = newProblem.id.toString().slice(-4);
+        document.getElementById('successCategory').textContent = selectedCategory;
+        document.getElementById('successOverlay').classList.add('active');
+
+        // Update Steps
+        updateStepProgress(5);
+    }
+
+    function goToDashboard() {
+        window.location.href = 'dashboard.html';
+    }
+
+    function postAnother() {
+        document.getElementById('successOverlay').classList.remove('active');
+        document.getElementById('probTitle').value = '';
+        document.getElementById('probDesc').value = '';
+        document.getElementById('probCity').value = '';
+        document.getElementById('probArea').value = '';
+        document.getElementById('probLandmark').value = '';
+        uploadedImages = [];
+        renderImagePreview();
+        updatePreview();
+
+        // Reset steps
+        for (let i = 1; i <= 5; i++) {
+            const c = document.getElementById(`sc${i}`);
+            const l = document.getElementById(`sl${i}`);
+            if (c) { c.classList.remove('done','active'); c.textContent = i === 5 ? '✓' : i; }
+            if (l) { l.classList.remove('done','active'); }
+        }
+        document.getElementById('sc1').classList.add('active');
+        document.getElementById('sl1') && document.getElementById('sl1').classList.add('active');
+    }
+
+    // ===== LOGOUT =====
+    function logout() {
+        if (confirm('Logout karna chahte ho?')) {
+            localStorage.removeItem('user');
+            window.location.href = '../index.html';
+        }
+    }
+
+    // ===== TOAST =====
+    function showToast(msg) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMsg').textContent = msg;
+        toast.classList.add('show');
+        setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+</script>
+
+</body>
+</html>

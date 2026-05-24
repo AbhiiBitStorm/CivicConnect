@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - LocalSolver</title>
+    <link rel="stylesheet" href="../style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .auth-page {
+            min-height: 100vh;
+            display: flex;
+            background: #f8fafc;
+        }
+
+        /* LEFT SIDE */
+        .auth-left {
+            flex: 1;
+            background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 60px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .auth-left::before {
+            content: '';
+            position: absolute;
+            width: 300px;
+            height: 300px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            top: -80px;
+            right: -80px;
+        }
+
+        .auth-left::after {
+            content: '';
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            bottom: -50px;
+            left: -50px;
+        }
+
+        .auth-left-logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .auth-left-logo i {
+            font-size: 28px;
+        }
+
+        .auth-left h2 {
+            font-size: 34px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .auth-left p {
+            font-size: 15px;
+            text-align: center;
+            opacity: 0.85;
+            line-height: 1.7;
+            margin-bottom: 40px;
+            max-width: 320px;
+        }
+
+        .auth-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 320px;
+        }
+
+        .auth-feature {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255,255,255,0.12);
+            padding: 14px 20px;
+            border-radius: 12px;
+        }
+
+        .auth-feature i {
+            font-size: 20px;
+            color: #c4b5fd;
+        }
+
+        .auth-feature span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        /* RIGHT SIDE */
+        .auth-right {
+            flex: 1.2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+            overflow-y: auto;
+        }
+
+        .auth-form-box {
+            width: 100%;
+            max-width: 480px;
+            padding: 20px 0;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #718096;
+            font-size: 14px;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #4f46e5;
+        }
+
+        .auth-form-box h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+
+        .auth-form-box .subtitle {
+            font-size: 14px;
+            color: #718096;
+            margin-bottom: 30px;
+        }
+
+        .auth-form-box .subtitle span {
+            color: #4f46e5;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        /* ROLE SELECTOR */
+        .role-selector {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 25px;
+        }
+
+        .role-card {
+            flex: 1;
+            padding: 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .role-card:hover {
+            border-color: #4f46e5;
+        }
+
+        .role-card.active {
+            border-color: #4f46e5;
+            background: #f0f4ff;
+        }
+
+        .role-card i {
+            font-size: 24px;
+            color: #a0aec0;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .role-card.active i {
+            color: #4f46e5;
+        }
+
+        .role-card h4 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+
+        .role-card p {
+            font-size: 11px;
+            color: #a0aec0;
+        }
+
+        /* FORM ROW */
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 7px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .input-wrapper i {
+            position: absolute;
+            left: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #a0aec0;
+            font-size: 15px;
+        }
+
+        .input-wrapper input,
+        .input-wrapper select {
+            width: 100%;
+            padding: 13px 14px 13px 42px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            font-family: 'Poppins', sans-serif;
+            color: #2d3748;
+            background: #ffffff;
+            transition: all 0.3s;
+            outline: none;
+            appearance: none;
+        }
+
+        .input-wrapper input:focus,
+        .input-wrapper select:focus {
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 4px rgba(79,70,229,0.08);
+        }
+
+        .input-wrapper input::placeholder {
+            color: #cbd5e0;
+        }
+
+        .eye-icon {
+            left: auto !important;
+            right: 14px;
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+
+        .eye-icon:hover {
+            color: #4f46e5 !important;
+        }
+
+        /* PASSWORD STRENGTH */
+        .password-strength {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            display: flex;
+            gap: 4px;
+            margin-bottom: 5px;
+        }
+
+        .strength-segment {
+            flex: 1;
+            height: 4px;
+            border-radius: 2px;
+            background: #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .strength-text {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        /* TERMS */
+        .terms-check {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            margin-bottom: 22px;
+            font-size: 13px;
+            color: #4a5568;
+        }
+
+        .terms-check input[type="checkbox"] {
+            width: 16px;
+            height: 16px;
+            accent-color: #4f46e5;
+            cursor: pointer;
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .terms-check a {
+            color: #4f46e5;
+            font-weight: 600;
+        }
+
+        /* BUTTON */
+        .btn-auth {
+            width: 100%;
+            padding: 14px;
+            background: #4f46e5;
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            box-shadow: 0 4px 15px rgba(79,70,229,0.3);
+        }
+
+        .btn-auth:hover {
+            background: #3730a3;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(79,70,229,0.4);
+        }
+
+        /* DIVIDER */
+        .divider {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 22px 0;
+            color: #a0aec0;
+            font-size: 13px;
+        }
+
+        .divider::before,
+        .divider::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: #e2e8f0;
+        }
+
+        /* SOCIAL */
+        .social-btns {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-social {
+            flex: 1;
+            padding: 11px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            background: white;
+            font-size: 13px;
+            font-weight: 600;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            color: #4a5568;
+            transition: all 0.3s;
+        }
+
+        .btn-social:hover {
+            border-color: #4f46e5;
+            color: #4f46e5;
+            transform: translateY(-2px);
+        }
+
+        /* MESSAGES */
+        .error-msg {
+            background: #fff5f5;
+            border: 1px solid #fed7d7;
+            color: #e53e3e;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .success-msg {
+            background: #f0fff4;
+            border: 1px solid #c6f6d5;
+            color: #38a169;
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            margin-bottom: 18px;
+            display: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* STEP INDICATOR */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 25px;
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 6px;
+            border-radius: 3px;
+            background: #e2e8f0;
+            transition: all 0.3s;
+        }
+
+        .step-dot.active {
+            background: #4f46e5;
+            width: 50px;
+        }
+
+        .step-dot.done {
+            background: #68d391;
+        }
+    </style>
+</head>
+<body>
+
+<div class="auth-page">
+
+    <!-- LEFT SIDE -->
+    <div class="auth-left">
+        <div class="auth-left-logo">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>LocalSolver</span>
+        </div>
+        <h2>Join Our Community! 🌍</h2>
+        <p>Hazaron logon ki problems solve karne me madad karo ya apni problems post karo</p>
+
+        <div class="auth-features">
+            <div class="auth-feature">
+                <i class="fas fa-user-check"></i>
+                <span>Free Account - Koi charges nahi</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-map-marked-alt"></i>
+                <span>Location Based Problems</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-star"></i>
+                <span>Earn Points by Helping</span>
+            </div>
+            <div class="auth-feature">
+                <i class="fas fa-bell"></i>
+                <span>Nearby Problem Alerts</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- RIGHT SIDE -->
+    <div class="auth-right">
+        <div class="auth-form-box">
+
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Back to Home
+            </a>
+
+            <!-- STEP INDICATOR -->
+            <div class="step-indicator">
+                <div class="step-dot active" id="dot1"></div>
+                <div class="step-dot" id="dot2"></div>
+                <div class="step-dot" id="dot3"></div>
+            </div>
+
+            <h1>Account Banao 🚀</h1>
+            <p class="subtitle">
+                Already account hai?
+                <span onclick="window.location.href='login.html'">Login karo</span>
+            </p>
+
+            <!-- ERROR MSG -->
+            <div class="error-msg" id="errorMsg">
+                <i class="fas fa-exclamation-circle"></i>
+                <span id="errorText">Kuch galat hua!</span>
+            </div>
+
+            <!-- SUCCESS MSG -->
+            <div class="success-msg" id="successMsg">
+                <i class="fas fa-check-circle"></i>
+                <span>Account ban gaya! Login page pe ja rahe hain...</span>
+            </div>
+
+            <!-- ROLE SELECTOR -->
+            <div class="role-selector">
+                <div class="role-card active" id="role-user" onclick="selectRole('user')">
+                    <i class="fas fa-user"></i>
+                    <h4>User</h4>
+                    <p>Problem post karo</p>
+                </div>
+                <div class="role-card" id="role-expert" onclick="selectRole('expert')">
+                    <i class="fas fa-tools"></i>
+                    <h4>Expert</h4>
+                    <p>Solutions do</p>
+                </div>
+                <div class="role-card" id="role-both" onclick="selectRole('both')">
+                    <i class="fas fa-users"></i>
+                    <h4>Both</h4>
+                    <p>Dono karo</p>
+                </div>
+            </div>
+
+            <!-- FORM -->
+            <form id="registerForm">
+
+                <!-- NAME ROW -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>First Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input
+                                type="text"
+                                id="firstName"
+                                placeholder="Rahul"
+                                required
+                            />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Last Name</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-user"></i>
+                            <input
+                                type="text"
+                                id="lastName"
+                                placeholder="Sharma"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label>Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-envelope"></i>
+                        <input
+                            type="email"
+                            id="email"
+                            placeholder="apna@email.com"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- PHONE -->
+                <div class="form-group">
+                    <label>Phone Number</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-phone"></i>
+                        <input
+                            type="tel"
+                            id="phone"
+                            placeholder="+91 98765 43210"
+                            required
+                        />
+                    </div>
+                </div>
+
+                <!-- AREA / CITY ROW -->
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>City</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-city"></i>
+                            <select id="city">
+                                <option value="">Select City</option>
+                                <option>Delhi</option>
+                                <option>Mumbai</option>
+                                <option>Pune</option>
+                                <option>Bangalore</option>
+                                <option>Hyderabad</option>
+                                <option>Chennai</option>
+                                <option>Kolkata</option>
+                                <option>Jaipur</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Area / Sector</label>
+                        <div class="input-wrapper">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <input
+                                type="text"
+                                id="area"
+                                placeholder="Sector 14"
+                                required
+                            />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+                    <label>Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input
+                            type="password"
+                            id="password"
+                            placeholder="Strong password banao"
+                            required
+                            oninput="checkStrength(this.value)"
+                        />
+                        <i class="fas fa-eye eye-icon" id="togglePass"></i>
+                    </div>
+                    <!-- PASSWORD STRENGTH -->
+                    <div class="password-strength">
+                        <div class="strength-bar">
+                            <div class="strength-segment" id="s1"></div>
+                            <div class="strength-segment" id="s2"></div>
+                            <div class="strength-segment" id="s3"></div>
+                            <div class="strength-segment" id="s4"></div>
+                        </div>
+                        <span class="strength-text" id="strengthText">Password enter karo</span>
+                    </div>
+                </div>
+
+                <!-- CONFIRM PASSWORD -->
+                <div class="form-group">
+                    <label>Confirm Password</label>
+                    <div class="input-wrapper">
+                        <i class="fas fa-lock"></i>
+                        <input
+                            type="password"
+                            id="confirmPassword"
+                            placeholder="Password dobara dalو"
+                            required
+                        />
+                        <i class="fas fa-eye eye-icon" id="toggleConfirm"></i>
+                    </div>
+                </div>
+
+                <!-- TERMS -->
+                <div class="terms-check">
+                    <input type="checkbox" id="terms" required />
+                    <label for="terms">
+                        Main agree karta/karti hun
+                        <a href="#">Terms & Conditions</a>
+                        aur
+                        <a href="#">Privacy Policy</a>
+                        se
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-auth">
+                    <i class="fas fa-user-plus"></i>
+                    Account Banao
+                </button>
+
+            </form>
+
+            <div class="divider">Ya register karo with</div>
+
+            <div class="social-btns">
+                <button class="btn-social">
+                    <img src="https://www.google.com/favicon.ico" alt="G" style="width:16px"/>
+                    Google
+                </button>
+                <button class="btn-social">
+                    <i class="fab fa-facebook" style="color:#1877f2;font-size:16px;"></i>
+                    Facebook
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // ===== ROLE SELECTOR =====
+    let selectedRole = 'user';
+
+    function selectRole(role) {
+        selectedRole = role;
+        document.querySelectorAll('.role-card').forEach(c => c.classList.remove('active'));
+        document.getElementById('role-' + role).classList.add('active');
+
+        // Update step indicator
+        document.getElementById('dot1').classList.add('done');
+        document.getElementById('dot2').classList.add('active');
+    }
+
+    // ===== TOGGLE PASSWORD =====
+    document.getElementById('togglePass').addEventListener('click', () => {
+        const pass = document.getElementById('password');
+        const icon = document.getElementById('togglePass');
+        if (pass.type === 'password') {
+            pass.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            pass.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    document.getElementById('toggleConfirm').addEventListener('click', () => {
+        const pass = document.getElementById('confirmPassword');
+        const icon = document.getElementById('toggleConfirm');
+        if (pass.type === 'password') {
+            pass.type = 'text';
+            icon.classList.replace('fa-eye', 'fa-eye-slash');
+        } else {
+            pass.type = 'password';
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+        }
+    });
+
+    // ===== PASSWORD STRENGTH =====
+    function checkStrength(val) {
+        const segments = ['s1','s2','s3','s4'];
+        const colors = ['#e53e3e','#ed8936','#ecc94b','#48bb78'];
+        let strength = 0;
+
+        if (val.length >= 6) strength++;
+        if (val.match(/[A-Z]/)) strength++;
+        if (val.match(/[0-9]/)) strength++;
+        if (val.match(/[^a-zA-Z0-9]/)) strength++;
+
+        const labels = ['','Weak 🔴','Fair 🟡','Good 🟠','Strong 🟢'];
+
+        segments.forEach((id, i) => {
+            const el = document.getElementById(id);
+            if (i < strength) {
+                el.style.background = colors[strength - 1];
+            } else {
+                el.style.background = '#e2e8f0';
+            }
+        });
+
+        document.getElementById('strengthText').textContent =
+            val.length === 0 ? 'Password enter karo' : labels[strength];
+    }
+
+    // ===== FORM SUBMIT =====
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const firstName = document.getElementById('firstName').value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        const confirmPass = document.getElementById('confirmPassword').value;
+        const terms = document.getElementById('terms').checked;
+
+        const errorMsg = document.getElementById('errorMsg');
+        const successMsg = document.getElementById('successMsg');
+        const errorText = document.getElementById('errorText');
+
+        // Validations
+        if (password !== confirmPass) {
+            errorMsg.style.display = 'flex';
+            errorText.textContent = 'Passwords match nahi kar rahe!';
+            return;
+        }
+
+        if (password.length < 6) {
+            errorMsg.style.display = 'flex';
+            errorText.textContent = 'Password kam se kam 6 characters ka hona chahiye!';
+            return;
+        }
+
+        if (!terms) {
+            errorMsg.style.display = 'flex';
+            errorText.textContent = 'Terms & Conditions accept karo!';
+            return;
+        }
+
+        // Success
+        errorMsg.style.display = 'none';
+        successMsg.style.display = 'flex';
+
+        // Step indicator done
+        document.getElementById('dot2').classList.add('done');
+        document.getElementById('dot3').classList.add('active');
+
+        // Save to localStorage (demo)
+        localStorage.setItem('user', JSON.stringify({
+            name: firstName,
+            email: email,
+            role: selectedRole
+        }));
+
+        setTimeout(() => {
+            window.location.href = 'login.html';
+        }, 2000);
+    });
+</script>
+
+</body>
+</html>
